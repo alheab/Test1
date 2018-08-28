@@ -18,6 +18,7 @@ library(knitr)
 library(tidyr)
 library(stringr)
 library(dplyr)
+library(ggmap)
 
 species <- read_csv("C:/Users/Julio César/Downloads/curso R/biodiversity-in-national-parks/species.csv")
 
@@ -58,10 +59,24 @@ kable(tabla1, caption = "Tabla 1. Características generales de los parques (prim
 ```
 
 
+###Localización de los Parques Naturales
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+mapa <- get_map(location = "Estados Unidos", zoom= 4, scale= "auto", maptype = "satellite") 
+MapaNP<- ggmap(mapa) + 
+  geom_point(data= parque, aes(x= Longitude, 
+                               y= Latitude, size= Acres, colour="royalblue"))
+
+MapaNP + scale_color_discrete (name= "Localización de los Parques Naturales",
+                               breaks= c("FALSE", "TRUE"))
+
+```
+
+
+
 
 ###Análisis exploratorios
 
-```{r, echo=FALSE,fig.width=12, fig.cap= c("Fig. 1 Total de especies reportadas por categoría en los Parques Naturales.", "Fig. 2 Ubicación y área ocupada por los Parques Naturales.", "Fig. 3 Localización y total de especies registradas en los Parques Naturales.", "Fig. 4 Regresrión lineal entre el área de los parques y el total de especies.", "Fig. 5 Regresión lineal entre la ubicación latitudinal de los parques y el total de especies.")}
+```{r, echo=FALSE,fig.width=12, fig.cap= c("Fig. 1 Total de especies reportadas por categoría en los Parques Naturales.", "Fig. 2 Localización y total de especies registradas en los Parques Naturales.", "Fig. 3 Regresrión lineal entre el área de los parques y el total de especies.", "Fig. 4 Regresión lineal entre la ubicación latitudinal de los parques y el total de especies.")}
 ggplot(parkCat1, aes(x= `Park Code`, y= Total_spp_categoria, las=2))+ geom_col (
   aes(fill = Category))+ theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
@@ -78,9 +93,6 @@ ggplot(parkCat1, aes(x= `Park Code`, y= Total_spp_categoria, las=2))+ geom_col (
         legend.text=element_text(size=11),
         axis.title=element_text(size=13),
         axis.text=element_text(size=9))
-
-ggplot(parque,aes(x=Longitude,y=Latitude))+geom_point(aes(size=Acres))+
-  theme_classic()
 
 ggplot(parque,aes(x=Longitude,y=Latitude))+geom_point(aes(size=Total_spp))+theme_classic()
 

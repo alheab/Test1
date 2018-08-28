@@ -1,0 +1,35 @@
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+
+stations<-read.csv("C:/Users/Julio César/Downloads/curso R/air-quality-madrid/stations.csv") %>% rename(station=id)
+madrid2017 <- read_csv("C:/Users/Julio César/Downloads/curso R/
+                      air-quality-madrid/csvs_per_year/csvs_per_year/madrid_2017.csv")
+                %>% filter (station % in % c(28079036,28079008,28079058,28079060,28079038)) %>% mutate(month=month(date), 
+                  year= year(date)) %>% left_join(stations)%>% group_by(month, 
+                        name, year) %>% summarize(NO_2=mean(NO_2,na.rm = TRUE))
+
+
+
+
+library(raster)
+library(animation)
+bio.stack<-read_rds("C:/Users/Julio César/Downloads/curso R/bio.stack.rds")
+plot(bio.stack)
+
+
+cellStats(bio.stack[[1]],min)
+cellStats(bio.stack[[8]],max) 
+
+
+for (i in 1:8) {
+  print(cellStats(bio.stack[[i]],mean))
+}
+
+
+brks<-round(seq(from=floor(cellStats(bio.stack[[1]],min)),to= celling(cellStats(bio.stack[[8]],max)),
+          length.out = 8))
+
+nb<-length(brks)
+colors<-rev(heat.colors(nb))
+

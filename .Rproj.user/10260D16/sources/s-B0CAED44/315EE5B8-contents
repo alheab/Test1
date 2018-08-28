@@ -1,0 +1,18 @@
+---
+title: "Reporte"
+author: "Ale H.A."
+date: "28 de agosto de 2018"
+output: pdf_document
+bibliography: bibliografia.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introducción
+
+Reporte parques nacionales[@article{bruner2001effectiveness}]
+
+ 
+##Referencias
